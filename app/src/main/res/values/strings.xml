@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MVVM-Practice</string>
+    <string name="male">男</string>
+    <string name="female">女</string>
 </resources>
