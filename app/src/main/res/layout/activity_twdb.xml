@@ -19,48 +19,53 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey"
+            android:background="@color/lightBlue"
             android:padding="10dp"
             android:hint="age"
             android:textAlignment="center"
-            android:text=""/>
+            android:text="@={`` + twdbViewModel.age}"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey"
+            android:background="@color/lightBlue"
             android:layout_marginTop="10dp"
             android:padding="10dp"
             android:hint="name"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:text="@={twdbViewModel.name}"/>
 
-        <RadioGroup
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp">
 
-            <RadioButton
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/male"
-                android:checked="@{twdbViewModel.isMale}"/>
+                android:text="是否已婚"/>
 
-            <RadioButton
+            <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/female"
-                android:checked="@{!twdbViewModel.isMale}"/>
+                android:checked="@={twdbViewModel.isMarried}"/>
 
-        </RadioGroup>
+        </LinearLayout>
 
-        <EditText
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey"
+            android:background="@color/lightBlue"
+            android:onClick="@{() -> twdbViewModel.submit()}"
+            android:text="submit"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lightBlue"
             android:layout_marginTop="10dp"
-            android:padding="10dp"
-            android:hint="gender"
-            android:textAlignment="center"/>
+            android:onClick="@{() -> twdbViewModel.update()}"
+            android:text="update"/>
 
     </LinearLayout>
 
