@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="taskListViewModel"
-            type="com.example.jason.mvvm_practice.crudtask.tasklist.TaskListViewModel"/>
+            type="com.example.jason.mvvm_practice.crudtask.tasklist.TaskListViewModel" />
     </data>
 
-    <LinearLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:textAlignment="center">
+        app:onRefreshCommand="@{taskListViewModel.refreshRunnable}"
+        app:onLoadMoreCommand="@{taskListViewModel.loadMoreRunnable}">
 
-       <Button
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:text="hello world"/>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="@{() -> taskListViewModel.loadNewsList()}"
+                android:text="hello world" />
+
+        </LinearLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </layout>

@@ -5,6 +5,8 @@ import java.util.List;
 
 public class NewsList implements Serializable {
 
+
+
     private Boolean hasNext;
     private String retcode;
     private String appCode;
@@ -58,5 +60,17 @@ public class NewsList implements Serializable {
 
     public void setData(List<News> data) {
         this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "NewsList{" +
+                "hasNext=" + hasNext +
+                ", retcode='" + retcode + '\'' +
+                ", appCode='" + appCode + '\'' +
+                ", dataType='" + dataType + '\'' +
+                ", pageToken='" + pageToken + '\'' +
+                ", data=" + data +
+                '}';
     }
 }
