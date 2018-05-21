@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".twowaydatabinding.TWDBActivity"></activity>
+        <activity android:name=".crudtask.tasklist.TaskListActivity"></activity>
         <activity android:name=".common.component.countdown.CountDownActivity"></activity>
     </application>
 

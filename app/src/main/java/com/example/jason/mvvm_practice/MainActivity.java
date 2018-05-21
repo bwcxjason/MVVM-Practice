@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.jason.mvvm_practice.crudtask.tasklist.TaskListActivity;
 import com.example.jason.mvvm_practice.twowaydatabinding.TWDBActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,6 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickTWDBBtn(View v) {
         Intent intent = new Intent(this, TWDBActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickTaskBtn(View v) {
+        Intent intent = new Intent(this, TaskListActivity.class);
         startActivity(intent);
     }
 

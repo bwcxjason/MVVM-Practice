@@ -15,7 +15,9 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="任务管理"
+        android:onClick="onClickTaskBtn"/>
 
     <Button
         android:layout_width="wrap_content"
