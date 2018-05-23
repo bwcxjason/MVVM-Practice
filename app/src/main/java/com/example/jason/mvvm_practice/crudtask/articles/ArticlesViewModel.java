@@ -1,40 +1,53 @@
-package com.example.jason.mvvm_practice.crudtask.tasklist;
+package com.example.jason.mvvm_practice.crudtask.articles;
 
 import android.arch.lifecycle.ViewModel;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.os.Handler;
 
-import com.example.jason.mvvm_practice.crudtask.model.NewsList;
+import com.example.jason.mvvm_practice.crudtask.model.Article;
+import com.example.jason.mvvm_practice.crudtask.model.Articles;
 import com.example.jason.mvvm_practice.retrofit.RetrofitProvider;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TaskListViewModel extends ViewModel {
+public class ArticlesViewModel extends ViewModel {
+
+    public ObservableList<Article> articles = new ObservableArrayList<>();
 
     private RefreshHandler mRefreshHandler;
     private Navigator mNavigator;
 
+    private int mCount = 2;
+    private String mNewsType = "6";
+    private int mOffset = 0;
+
     public interface RefreshHandler {
-        void onRefreshFinish(NewsList list);
-        void onLoadMoreFinish(NewsList list);
+        void onRefreshFinish(List<Article> articles);
+
+        void onLoadMoreFinish(List<Article> articles);
     }
 
     public interface Navigator {
         void goToLogin();
     }
 
-    public void loadNewsList() {
-        NewsService service = RetrofitProvider.getInstance().create(NewsService.class);
-        Call<NewsList> newsListConnecation = service.getNewsList();
-        newsListConnecation.enqueue(new Callback<NewsList>() {
+    public void loadArticles() {
+        ArticleService service = RetrofitProvider.getInstance().create(ArticleService.class);
+        Call<Articles> call = service.getArticles(mCount, mNewsType, mOffset);
+        call.enqueue(new Callback<Articles>() {
             @Override
-            public void onResponse(Call<NewsList> call, Response<NewsList> response) {
-                System.out.println(response.body().getData().toString());
+            public void onResponse(Call<Articles> call, Response<Articles> response) {
+                articles.addAll(response.body().getArticleList());
+                mOffset += mCount;
             }
 
             @Override
-            public void onFailure(Call<NewsList> call, Throwable t) {
+            public void onFailure(Call<Articles> call, Throwable t) {
                 System.out.println(Thread.activeCount());
             }
         });
@@ -45,11 +58,8 @@ public class TaskListViewModel extends ViewModel {
         public void run() {
             Handler handler = new Handler();
             new Thread(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+                loadArticles();
                 handler.post(() -> mRefreshHandler.onRefreshFinish(null));
 
             }).start();

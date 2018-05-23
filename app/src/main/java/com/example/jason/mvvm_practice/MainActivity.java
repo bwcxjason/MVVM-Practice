@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.jason.mvvm_practice.crudtask.tasklist.TaskListActivity;
+import com.example.jason.mvvm_practice.crudtask.articles.ArticlesActivity;
 import com.example.jason.mvvm_practice.twowaydatabinding.TWDBActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickTaskBtn(View v) {
-        Intent intent = new Intent(this, TaskListActivity.class);
+        Intent intent = new Intent(this, ArticlesActivity.class);
         startActivity(intent);
     }
 

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jason.mvvm_practice">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,8 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".twowaydatabinding.TWDBActivity"></activity>
-        <activity android:name=".crudtask.tasklist.TaskListActivity"></activity>
-        <activity android:name=".common.component.countdown.CountDownActivity"></activity>
+        <activity android:name=".crudtask.articles.ArticlesActivity"></activity>
     </application>
 
 </manifest>
