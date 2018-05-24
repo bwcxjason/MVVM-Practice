@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.jason.mvvm_practice.crudtask.articles.ArticlesActivity">
 
     <data>
@@ -17,8 +17,8 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:onRefreshCommand="@{articlesViewModel.refreshRunnable}"
-        app:onLoadMoreCommand="@{articlesViewModel.loadMoreRunnable}">
+        app:onLoadMoreCommand="@{articlesViewModel.loadMoreRunnable}"
+        app:onRefreshCommand="@{articlesViewModel.refreshRunnable}">
 
 
         <LinearLayout

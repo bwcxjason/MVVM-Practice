@@ -1,10 +1,11 @@
 package com.example.jason.mvvm_practice;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.example.jason.mvvm_practice.calculation.CalculateActivity;
 import com.example.jason.mvvm_practice.crudtask.articles.ArticlesActivity;
 import com.example.jason.mvvm_practice.twowaydatabinding.TWDBActivity;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickCalculateBtn(View v) {
-        Intent intent = new Intent(this, ArticlesActivity.class);
+        Intent intent = new Intent(this, CalculateActivity.class);
         startActivity(intent);
     }
 

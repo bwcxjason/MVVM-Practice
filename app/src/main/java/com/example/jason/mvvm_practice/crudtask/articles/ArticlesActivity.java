@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,13 @@ import com.example.jason.mvvm_practice.R;
 import com.example.jason.mvvm_practice.crudtask.model.Article;
 import com.example.jason.mvvm_practice.databinding.ActivityArticlesBinding;
 import com.example.jason.mvvm_practice.databinding.ActivityArticleItemBinding;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesActivity extends AppCompatActivity implements ArticlesViewModel.RefreshHandler, ArticlesViewModel.Navigator {
+public class ArticlesActivity extends AppCompatActivity implements ArticlesViewModel.RefreshHandler, ArticlesViewModel.Navigator, OnRefreshListener {
 
     private ActivityArticlesBinding mArticlesBinding;
     private ArticlesViewModel mArticlesViewModel;
@@ -43,7 +46,7 @@ public class ArticlesActivity extends AppCompatActivity implements ArticlesViewM
     private void setupListAdapter() {
         ListView listView = mArticlesBinding.articles;
 
-        mArticlesAdapter = new ArticlesAdapter(mArticlesViewModel, new ArrayList<>());
+        mArticlesAdapter = new ArticlesAdapter(new ArrayList<>());
         listView.setAdapter(mArticlesAdapter);
     }
 
@@ -66,13 +69,17 @@ public class ArticlesActivity extends AppCompatActivity implements ArticlesViewM
         startActivity(intent);
     }
 
+    @Override
+    public void onRefresh(RefreshLayout refreshLayout) {
+        Toast.makeText(getBaseContext(), "刷新开始", Toast.LENGTH_LONG).show();
+        new Handler().postDelayed(() -> mArticlesBinding.refreshLayout.finishRefresh(), 2000);
+    }
+
     static class ArticlesAdapter extends BaseAdapter {
 
-        private ArticlesViewModel mArticlesViewModel;
         private List<Article> mArticles;
 
-        public ArticlesAdapter(ArticlesViewModel articlesViewModel, List<Article> articles) {
-            mArticlesViewModel = articlesViewModel;
+        public ArticlesAdapter(List<Article> articles) {
             mArticles = articles;
         }
 

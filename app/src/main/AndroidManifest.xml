@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".twowaydatabinding.TWDBActivity"></activity>
         <activity android:name=".crudtask.articles.ArticlesActivity"></activity>
+        <activity android:name=".calculation.CalculateActivity"></activity>
     </application>
 
 </manifest>

@@ -8,18 +8,21 @@
     tools:context="com.example.jason.mvvm_practice.MainActivity">
 
     <Button
+        android:id="@+id/onClickTWDBBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="双向绑定"
         android:onClick="onClickTWDBBtn"/>
 
     <Button
+        android:id="@+id/onClickTaskBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="任务管理"
         android:onClick="onClickTaskBtn"/>
 
     <Button
+        android:id="@+id/onClickCalculateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="计算"
