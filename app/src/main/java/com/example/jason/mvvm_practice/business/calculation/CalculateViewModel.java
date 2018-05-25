@@ -1,4 +1,4 @@
-package com.example.jason.mvvm_practice.calculation;
+package com.example.jason.mvvm_practice.business.calculation;
 
 import android.databinding.BaseObservable;
 import android.databinding.Observable;

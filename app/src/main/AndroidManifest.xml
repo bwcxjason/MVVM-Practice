@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".twowaydatabinding.TWDBActivity"></activity>
-        <activity android:name=".crudtask.articles.ArticlesActivity"></activity>
-        <activity android:name=".calculation.CalculateActivity"></activity>
+        <activity android:name=".business.twowaydatabinding.TWDBActivity"></activity>
+        <activity android:name=".business.articles.activity.ArticlesActivity"></activity>
+        <activity android:name=".business.calculation.CalculateActivity"></activity>
     </application>
 
 </manifest>

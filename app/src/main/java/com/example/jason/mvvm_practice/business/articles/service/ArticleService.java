@@ -1,6 +1,6 @@
-package com.example.jason.mvvm_practice.crudtask.articles;
+package com.example.jason.mvvm_practice.business.articles.service;
 
-import com.example.jason.mvvm_practice.crudtask.model.Articles;
+import com.example.jason.mvvm_practice.business.articles.model.Articles;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,4 +1,4 @@
-package com.example.jason.mvvm_practice.common;
+package com.example.jason.mvvm_practice.common.bindingadapter;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;

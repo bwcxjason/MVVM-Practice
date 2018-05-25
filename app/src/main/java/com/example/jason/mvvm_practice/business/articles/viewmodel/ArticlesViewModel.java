@@ -1,13 +1,14 @@
-package com.example.jason.mvvm_practice.crudtask.articles;
+package com.example.jason.mvvm_practice.business.articles.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 import android.os.Handler;
 
-import com.example.jason.mvvm_practice.crudtask.model.Article;
-import com.example.jason.mvvm_practice.crudtask.model.Articles;
-import com.example.jason.mvvm_practice.retrofit.RetrofitProvider;
+import com.example.jason.mvvm_practice.business.articles.model.Article;
+import com.example.jason.mvvm_practice.business.articles.model.Articles;
+import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
+import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
 
 import java.util.List;
 

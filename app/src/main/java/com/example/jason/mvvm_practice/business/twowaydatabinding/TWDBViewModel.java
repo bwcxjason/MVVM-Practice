@@ -1,4 +1,4 @@
-package com.example.jason.mvvm_practice.twowaydatabinding;
+package com.example.jason.mvvm_practice.business.twowaydatabinding;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

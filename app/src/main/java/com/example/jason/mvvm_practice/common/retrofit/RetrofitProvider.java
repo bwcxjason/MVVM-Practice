@@ -1,4 +1,4 @@
-package com.example.jason.mvvm_practice.retrofit;
+package com.example.jason.mvvm_practice.common.retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

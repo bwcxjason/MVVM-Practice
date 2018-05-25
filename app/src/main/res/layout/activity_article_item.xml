@@ -4,7 +4,7 @@
     <data>
         <variable
             name="articleItemViewModel"
-            type="com.example.jason.mvvm_practice.crudtask.articles.ArticleItemViewModel"/>
+            type="com.example.jason.mvvm_practice.business.articles.viewmodel.ArticleItemViewModel"/>
     </data>
 
     <LinearLayout

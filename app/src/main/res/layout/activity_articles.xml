@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.jason.mvvm_practice.crudtask.articles.ArticlesActivity">
+    tools:context=".business.articles.activity.ArticlesActivity">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="articlesViewModel"
-            type="com.example.jason.mvvm_practice.crudtask.articles.ArticlesViewModel" />
+            type="com.example.jason.mvvm_practice.business.articles.viewmodel.ArticlesViewModel" />
     </data>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

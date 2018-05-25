@@ -1,4 +1,4 @@
-package com.example.jason.mvvm_practice.common;
+package com.example.jason.mvvm_practice.common.bindingconverter;
 
 import android.databinding.BindingConversion;
 import android.graphics.drawable.ColorDrawable;

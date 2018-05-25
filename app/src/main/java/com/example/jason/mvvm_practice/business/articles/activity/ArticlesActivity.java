@@ -1,10 +1,9 @@
-package com.example.jason.mvvm_practice.crudtask.articles;
+package com.example.jason.mvvm_practice.business.articles.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +14,16 @@ import android.widget.Toast;
 
 import com.example.jason.mvvm_practice.MainActivity;
 import com.example.jason.mvvm_practice.R;
-import com.example.jason.mvvm_practice.crudtask.model.Article;
-import com.example.jason.mvvm_practice.databinding.ActivityArticlesBinding;
+import com.example.jason.mvvm_practice.business.articles.model.Article;
+import com.example.jason.mvvm_practice.business.articles.viewmodel.ArticleItemViewModel;
+import com.example.jason.mvvm_practice.business.articles.viewmodel.ArticlesViewModel;
 import com.example.jason.mvvm_practice.databinding.ActivityArticleItemBinding;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.example.jason.mvvm_practice.databinding.ActivityArticlesBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesActivity extends AppCompatActivity implements ArticlesViewModel.RefreshHandler, ArticlesViewModel.Navigator, OnRefreshListener {
+public class ArticlesActivity extends AppCompatActivity implements ArticlesViewModel.RefreshHandler, ArticlesViewModel.Navigator {
 
     private ActivityArticlesBinding mArticlesBinding;
     private ArticlesViewModel mArticlesViewModel;
@@ -69,13 +68,7 @@ public class ArticlesActivity extends AppCompatActivity implements ArticlesViewM
         startActivity(intent);
     }
 
-    @Override
-    public void onRefresh(RefreshLayout refreshLayout) {
-        Toast.makeText(getBaseContext(), "刷新开始", Toast.LENGTH_LONG).show();
-        new Handler().postDelayed(() -> mArticlesBinding.refreshLayout.finishRefresh(), 2000);
-    }
-
-    static class ArticlesAdapter extends BaseAdapter {
+    public static class ArticlesAdapter extends BaseAdapter {
 
         private List<Article> mArticles;
 

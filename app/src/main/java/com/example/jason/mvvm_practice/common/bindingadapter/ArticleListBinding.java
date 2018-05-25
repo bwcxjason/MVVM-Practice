@@ -1,9 +1,10 @@
-package com.example.jason.mvvm_practice.crudtask.articles;
+package com.example.jason.mvvm_practice.common.bindingadapter;
 
 import android.databinding.BindingAdapter;
 import android.widget.ListView;
 
-import com.example.jason.mvvm_practice.crudtask.model.Article;
+import com.example.jason.mvvm_practice.business.articles.activity.ArticlesActivity;
+import com.example.jason.mvvm_practice.business.articles.model.Article;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.jason.mvvm_practice.crudtask.model;
+package com.example.jason.mvvm_practice.business.articles.model;
 
 import java.io.Serializable;
 import java.util.List;

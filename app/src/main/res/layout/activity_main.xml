@@ -15,18 +15,18 @@
         android:onClick="onClickTWDBBtn"/>
 
     <Button
-        android:id="@+id/onClickTaskBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="任务管理"
-        android:onClick="onClickTaskBtn"/>
-
-    <Button
         android:id="@+id/onClickCalculateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="计算"
         android:onClick="onClickCalculateBtn"/>
+
+    <Button
+        android:id="@+id/onClickTaskBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="列表"
+        android:onClick="onClickTaskBtn"/>
 
     <Button
         android:layout_width="wrap_content"

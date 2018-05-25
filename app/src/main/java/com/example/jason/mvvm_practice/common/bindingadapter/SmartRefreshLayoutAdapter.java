@@ -1,4 +1,4 @@
-package com.example.jason.mvvm_practice.crudtask.articles;
+package com.example.jason.mvvm_practice.common.bindingadapter;
 
 import android.databinding.BindingAdapter;
 

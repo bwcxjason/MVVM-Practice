@@ -1,10 +1,9 @@
-package com.example.jason.mvvm_practice.crudtask.articles;
+package com.example.jason.mvvm_practice.business.articles.viewmodel;
 
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.databinding.ObservableField;
 
-import com.example.jason.mvvm_practice.crudtask.model.Article;
+import com.example.jason.mvvm_practice.business.articles.model.Article;
 
 public class ArticleItemViewModel extends BaseObservable {
 
