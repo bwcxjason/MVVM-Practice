@@ -8,6 +8,7 @@ import android.os.Handler;
 import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
+import com.example.jason.mvvm_practice.common.command.ReplyAction;
 import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
 
 import java.util.List;
@@ -54,31 +55,21 @@ public class ArticlesViewModel extends ViewModel {
         });
     }
 
-    public Runnable refreshRunnable = new Runnable() {
+    public ReplyAction refresh = new ReplyAction() {
         @Override
-        public void run() {
+        public void execute() {
+            loadArticles();
             Handler handler = new Handler();
-            new Thread(() -> {
-
-                loadArticles();
-                handler.post(() -> mRefreshHandler.onRefreshFinish(null));
-
-            }).start();
+            handler.post(() -> mRefreshHandler.onRefreshFinish(null));
         }
     };
 
-    public Runnable loadMoreRunnable = new Runnable() {
+    public ReplyAction loadMore = new ReplyAction() {
         @Override
-        public void run() {
+        public void execute() {
+            loadArticles();
             Handler handler = new Handler();
-            new Thread(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                handler.post(() -> mRefreshHandler.onLoadMoreFinish(null));
-            }).start();
+            handler.post(() -> mRefreshHandler.onLoadMoreFinish(null));
         }
     };
 
