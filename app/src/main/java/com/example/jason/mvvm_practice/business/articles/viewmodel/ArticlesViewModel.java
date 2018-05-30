@@ -11,6 +11,7 @@ import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
 import com.example.jason.mvvm_practice.common.command.ReplyAction;
 import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -19,33 +20,28 @@ import retrofit2.Response;
 
 public class ArticlesViewModel extends ViewModel {
 
-    public ObservableList<Article> articles = new ObservableArrayList<>();
+    private static ArticleService sArticleService;
+
+    public ObservableList<ArticleItemViewModel> articleVMList = new ObservableArrayList<>();
 
     private RefreshHandler mRefreshHandler;
     private Navigator mNavigator;
 
+
     private int mCount = 2;
     private String mNewsType = "6";
-    private int mOffset = 0;
 
-    public interface RefreshHandler {
-        void onRefreshFinish(List<Article> articles);
 
-        void onLoadMoreFinish(List<Article> articles);
-    }
-
-    public interface Navigator {
-        void goToLogin();
+    static {
+        sArticleService = RetrofitProvider.getInstance().create(ArticleService.class);
     }
 
     public void loadArticles() {
-        ArticleService service = RetrofitProvider.getInstance().create(ArticleService.class);
-        Call<Articles> call = service.getArticles(mCount, mNewsType, mOffset);
+        Call<Articles> call = sArticleService.getArticles(mCount, mNewsType, articleVMList.size());
         call.enqueue(new Callback<Articles>() {
             @Override
             public void onResponse(Call<Articles> call, Response<Articles> response) {
-                articles.addAll(response.body().getArticleList());
-                mOffset += mCount;
+                articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
             }
 
             @Override
@@ -55,23 +51,63 @@ public class ArticlesViewModel extends ViewModel {
         });
     }
 
+    private Handler mHandler = new Handler();
+
     public ReplyAction refresh = new ReplyAction() {
         @Override
         public void execute() {
-            loadArticles();
-            Handler handler = new Handler();
-            handler.post(() -> mRefreshHandler.onRefreshFinish(null));
+            Call<Articles> call = sArticleService.getArticles(mCount, mNewsType, 0);
+            call.enqueue(new RefreshCallback());
         }
     };
 
     public ReplyAction loadMore = new ReplyAction() {
         @Override
         public void execute() {
-            loadArticles();
-            Handler handler = new Handler();
-            handler.post(() -> mRefreshHandler.onLoadMoreFinish(null));
+            Call<Articles> call = sArticleService.getArticles(mCount, mNewsType, articleVMList.size());
+            call.enqueue(new LoadMoreCallback());
         }
     };
+
+    class RefreshCallback implements Callback<Articles> {
+
+        @Override
+        public void onResponse(Call<Articles> call, Response<Articles> response) {
+            articleVMList.clear();
+            articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
+
+            mHandler.post(() -> mRefreshHandler.onRefreshFinish());
+        }
+
+        @Override
+        public void onFailure(Call<Articles> call, Throwable t) {
+
+        }
+    }
+
+    class LoadMoreCallback implements Callback<Articles> {
+
+        @Override
+        public void onResponse(Call<Articles> call, Response<Articles> response) {
+            articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
+            mHandler.post(() -> mRefreshHandler.onLoadMoreFinish());
+        }
+
+        @Override
+        public void onFailure(Call<Articles> call, Throwable t) {
+
+        }
+    }
+
+    public interface RefreshHandler {
+        void onRefreshFinish();
+
+        void onLoadMoreFinish();
+    }
+
+    public interface Navigator {
+        void goToLogin();
+    }
 
     public void onClickLoginButton() {
         mNavigator.goToLogin();
@@ -83,6 +119,21 @@ public class ArticlesViewModel extends ViewModel {
 
     public void setNavigator(Navigator navigator) {
         mNavigator = navigator;
+    }
+
+    private List<ArticleItemViewModel> convertArticleListToArticleVMList(List<Article> articleList) {
+        List<ArticleItemViewModel> articleItemVMlList = new ArrayList<>();
+        if (articleList == null) {
+            return articleItemVMlList;
+        }
+
+        for (int i = 0; i < articleList.size(); i++) {
+            ArticleItemViewModel articleItemVM = new ArticleItemViewModel();
+            articleItemVM.setArticle(articleList.get(i));
+            articleItemVMlList.add(articleItemVM);
+        }
+
+        return articleItemVMlList;
     }
 
 }
