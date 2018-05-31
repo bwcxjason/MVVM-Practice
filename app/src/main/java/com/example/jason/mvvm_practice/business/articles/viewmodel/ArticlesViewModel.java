@@ -8,7 +8,7 @@ import android.os.Handler;
 import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
-import com.example.jason.mvvm_practice.common.command.ReplyAction;
+import com.example.jason.mvvm_practice.common.command.ReplyCommand;
 import com.example.jason.mvvm_practice.common.constant.Constant;
 import com.example.jason.mvvm_practice.common.enumeration.NewsTypeEnum;
 import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
@@ -36,17 +36,17 @@ public class ArticlesViewModel extends ViewModel {
 
     private Handler mHandler = new Handler();
 
-    public ReplyAction refresh = new ReplyAction() {
+    public ReplyCommand refresh = new ReplyCommand() {
         @Override
-        public void execute() {
+        public void action() {
             Call<Articles> call = sArticleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
             call.enqueue(new RefreshCallback());
         }
     };
 
-    public ReplyAction loadMore = new ReplyAction() {
+    public ReplyCommand loadMore = new ReplyCommand() {
         @Override
-        public void execute() {
+        public void action() {
             Call<Articles> call = sArticleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), articleVMList.size());
             call.enqueue(new LoadMoreCallback());
         }
