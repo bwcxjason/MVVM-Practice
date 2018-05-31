@@ -1,6 +1,6 @@
 package com.example.jason.mvvm_practice.common.command;
 
-public interface ReplyCommand {
+public interface Command {
 
     void action();
 
