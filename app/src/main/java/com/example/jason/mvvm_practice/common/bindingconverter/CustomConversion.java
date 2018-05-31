@@ -2,11 +2,12 @@ package com.example.jason.mvvm_practice.common.bindingconverter;
 
 import android.databinding.BindingConversion;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 
 public class CustomConversion {
 
     /**
-     * 正例(解决databinding设置颜色值报错问题)
+     * 颜色值转Drawable
      *
      * @param color
      * @return
@@ -17,20 +18,18 @@ public class CustomConversion {
     }
 
     /**
-     * 反例(databinding赋值String将自动转成Int，会报错)
-     *
+     * int转String
      * @param value
      * @return
      */
     @BindingConversion
-    public static int convertStringToInt(String value) {
-        int number;
-        try {
-            number = Integer.parseInt(value);
-        } catch (NumberFormatException e) {
-            number = 0;
-        }
-        return number;
+    public static String convertIntToString(int value) {
+        return String.valueOf(value);
+    }
+
+    @BindingConversion
+    public static String convertDrawableToString(Drawable drawable) {
+        return new String("test");
     }
 
 }

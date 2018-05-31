@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="articlesViewModel"
+            type="com.example.jason.mvvm_practice.business.articles.viewmodel.ArticlesViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/lightBlue" />
+
+        <include
+            android:id="@+id/articleLayout"
+            layout="@layout/activity_articles"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_below="@+id/image1"
+            bind:articlesViewModel="@{articlesViewModel}" />
+
+    </RelativeLayout>
+</layout>

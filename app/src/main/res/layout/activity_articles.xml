@@ -27,7 +27,7 @@
             android:textAlignment="center">
 
             <ListView
-                android:id="@+id/articles"
+                android:id="@+id/articleListView"
                 bindItems="@{articlesViewModel.articleVMList}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

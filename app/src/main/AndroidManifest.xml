@@ -21,6 +21,7 @@
         <activity android:name=".business.twowaydatabinding.TWDBActivity"></activity>
         <activity android:name=".business.articles.activity.ArticlesActivity"></activity>
         <activity android:name=".business.calculation.CalculateActivity"></activity>
+        <activity android:name=".business.homepage.activity.HomePageActivity"></activity>
     </application>
 
 </manifest>

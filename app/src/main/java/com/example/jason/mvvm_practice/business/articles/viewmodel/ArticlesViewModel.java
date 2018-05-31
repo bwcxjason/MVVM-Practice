@@ -9,6 +9,8 @@ import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
 import com.example.jason.mvvm_practice.common.command.ReplyAction;
+import com.example.jason.mvvm_practice.common.constant.Constant;
+import com.example.jason.mvvm_practice.common.enumeration.NewsTypeEnum;
 import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
 
 import java.util.ArrayList;
@@ -28,27 +30,8 @@ public class ArticlesViewModel extends ViewModel {
     private Navigator mNavigator;
 
 
-    private int mCount = 2;
-    private String mNewsType = "6";
-
-
     static {
         sArticleService = RetrofitProvider.getInstance().create(ArticleService.class);
-    }
-
-    public void loadArticles() {
-        Call<Articles> call = sArticleService.getArticles(mCount, mNewsType, articleVMList.size());
-        call.enqueue(new Callback<Articles>() {
-            @Override
-            public void onResponse(Call<Articles> call, Response<Articles> response) {
-                articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
-            }
-
-            @Override
-            public void onFailure(Call<Articles> call, Throwable t) {
-                System.out.println(Thread.activeCount());
-            }
-        });
     }
 
     private Handler mHandler = new Handler();
@@ -56,7 +39,7 @@ public class ArticlesViewModel extends ViewModel {
     public ReplyAction refresh = new ReplyAction() {
         @Override
         public void execute() {
-            Call<Articles> call = sArticleService.getArticles(mCount, mNewsType, 0);
+            Call<Articles> call = sArticleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
             call.enqueue(new RefreshCallback());
         }
     };
@@ -64,7 +47,7 @@ public class ArticlesViewModel extends ViewModel {
     public ReplyAction loadMore = new ReplyAction() {
         @Override
         public void execute() {
-            Call<Articles> call = sArticleService.getArticles(mCount, mNewsType, articleVMList.size());
+            Call<Articles> call = sArticleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), articleVMList.size());
             call.enqueue(new LoadMoreCallback());
         }
     };

@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.example.jason.mvvm_practice.business.calculation.CalculateActivity;
 import com.example.jason.mvvm_practice.business.articles.activity.ArticlesActivity;
+import com.example.jason.mvvm_practice.business.homepage.activity.HomePageActivity;
 import com.example.jason.mvvm_practice.business.twowaydatabinding.TWDBActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickCalculateBtn(View v) {
         Intent intent = new Intent(this, CalculateActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickHomePageBtn(View v) {
+        Intent intent = new Intent(this, HomePageActivity.class);
         startActivity(intent);
     }
 

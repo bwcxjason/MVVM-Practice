@@ -36,7 +36,7 @@ public class ArticlesActivity extends AppCompatActivity implements ArticlesViewM
     }
 
     private void setupListAdapter() {
-        ListView listView = mArticlesBinding.articles;
+        ListView listView = mArticlesBinding.articleListView;
         mListViewAdapter = new ListViewAdapter<ArticleItemViewModel>(this, R.layout.activity_article_item, BR.articleItemViewModel);
         listView.setAdapter(mListViewAdapter);
     }
