@@ -51,6 +51,7 @@ public class ArticlesViewModel extends ViewModel {
 
     private void handleRefreshFailure(Throwable e) {
         // TODO
+        System.out.println();
     }
 
     private void handleLoadMoreSuccess(Articles articles) {
