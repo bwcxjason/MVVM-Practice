@@ -8,10 +8,11 @@ import android.os.Handler;
 import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
+import com.example.jason.mvvm_practice.common.async.ListenableFuture;
 import com.example.jason.mvvm_practice.common.command.Command;
 import com.example.jason.mvvm_practice.common.constant.Constant;
 import com.example.jason.mvvm_practice.common.enumeration.NewsTypeEnum;
-import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
+import com.example.jason.mvvm_practice.common.retrofit.RetrofitToCommonProxyAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import retrofit2.Response;
 
 public class ArticlesViewModel extends ViewModel {
 
-    private static ArticleService sArticleService;
+    private ArticleService articleService = RetrofitToCommonProxyAdapterFactory.getProxyInstance(ArticleService.class);
 
     public ObservableList<ArticleItemViewModel> articleVMList = new ObservableArrayList<>();
 
@@ -30,25 +31,43 @@ public class ArticlesViewModel extends ViewModel {
     private Navigator mNavigator;
 
 
-    static {
-        sArticleService = RetrofitProvider.getInstance().create(ArticleService.class);
-    }
-
     private Handler mHandler = new Handler();
 
     public Command refresh = new Command() {
         @Override
         public void action() {
-            Call<Articles> call = sArticleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-            call.enqueue(new RefreshCallback());
+            ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+            future.addCallback(articles -> handleRefreshSuccess(articles),
+                    ex -> handleRefreshFailure(ex));
         }
     };
+
+    private void handleRefreshSuccess(Articles articles) {
+        articleVMList.clear();
+        articleVMList.addAll(convertArticleListToArticleVMList(articles.getArticleList()));
+
+        mHandler.post(() -> mRefreshHandler.onRefreshFinish());
+    }
+
+    private void handleRefreshFailure(Throwable e) {
+        // TODO
+    }
+
+    private void handleLoadMoreSuccess(Articles articles) {
+        articleVMList.addAll(convertArticleListToArticleVMList(articles.getArticleList()));
+        mHandler.post(() -> mRefreshHandler.onLoadMoreFinish());
+    }
+
+    private void handleLoadMoreFailure(Throwable e) {
+        // TODO
+    }
 
     public Command loadMore = new Command() {
         @Override
         public void action() {
-            Call<Articles> call = sArticleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), articleVMList.size());
-            call.enqueue(new LoadMoreCallback());
+            ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+            future.addCallback(articles -> handleLoadMoreSuccess(articles),
+                    ex -> handleLoadMoreFailure(ex));
         }
     };
 

@@ -1,14 +1,12 @@
 package com.example.jason.mvvm_practice.business.articles.service;
 
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
+import com.example.jason.mvvm_practice.common.async.ListenableFuture;
+import com.example.jason.mvvm_practice.common.retrofit.TargetRetrofitService;
 
-import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
-
+@TargetRetrofitService(RetrofitArticleService.class)
 public interface ArticleService {
 
-    @GET("/discovery/list")
-    Call<Articles> getArticles(@Query("count") int count, @Query("newsType") String newsType, @Query("offset") int offset);
+    ListenableFuture<Articles> getArticles(int count, String newsType, int offset);
 
 }
