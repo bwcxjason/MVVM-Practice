@@ -17,10 +17,6 @@ import com.example.jason.mvvm_practice.common.retrofit.RetrofitToCommonProxyAdap
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class ArticlesViewModel extends ViewModel {
 
     private ArticleService articleService = RetrofitToCommonProxyAdapterFactory.getProxyInstance(ArticleService.class);
@@ -29,17 +25,19 @@ public class ArticlesViewModel extends ViewModel {
 
     private RefreshHandler mRefreshHandler;
     private Navigator mNavigator;
-
-
+    private ArticleEditor mEditor;
     private Handler mHandler = new Handler();
 
-    public Command refresh = new Command() {
-        @Override
-        public void action() {
-            ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-            future.addCallback(articles -> handleRefreshSuccess(articles),
-                    ex -> handleRefreshFailure(ex));
-        }
+    public Command refresh = () -> {
+        ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+        future.addCallback(articles -> handleRefreshSuccess(articles),
+                ex -> handleRefreshFailure(ex));
+    };
+
+    public Command loadMore = () -> {
+        ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+        future.addCallback(articles -> handleLoadMoreSuccess(articles),
+                ex -> handleLoadMoreFailure(ex));
     };
 
     private void handleRefreshSuccess(Articles articles) {
@@ -50,8 +48,7 @@ public class ArticlesViewModel extends ViewModel {
     }
 
     private void handleRefreshFailure(Throwable e) {
-        // TODO
-        System.out.println();
+        e.printStackTrace();
     }
 
     private void handleLoadMoreSuccess(Articles articles) {
@@ -60,46 +57,7 @@ public class ArticlesViewModel extends ViewModel {
     }
 
     private void handleLoadMoreFailure(Throwable e) {
-        // TODO
-    }
-
-    public Command loadMore = new Command() {
-        @Override
-        public void action() {
-            ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-            future.addCallback(articles -> handleLoadMoreSuccess(articles),
-                    ex -> handleLoadMoreFailure(ex));
-        }
-    };
-
-    class RefreshCallback implements Callback<Articles> {
-
-        @Override
-        public void onResponse(Call<Articles> call, Response<Articles> response) {
-            articleVMList.clear();
-            articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
-
-            mHandler.post(() -> mRefreshHandler.onRefreshFinish());
-        }
-
-        @Override
-        public void onFailure(Call<Articles> call, Throwable t) {
-
-        }
-    }
-
-    class LoadMoreCallback implements Callback<Articles> {
-
-        @Override
-        public void onResponse(Call<Articles> call, Response<Articles> response) {
-            articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
-            mHandler.post(() -> mRefreshHandler.onLoadMoreFinish());
-        }
-
-        @Override
-        public void onFailure(Call<Articles> call, Throwable t) {
-
-        }
+        e.printStackTrace();
     }
 
     public interface RefreshHandler {
@@ -110,6 +68,10 @@ public class ArticlesViewModel extends ViewModel {
 
     public interface Navigator {
         void goToLogin();
+    }
+
+    public interface ArticleEditor {
+        void editArticle(ArticleItemViewModel itemViewModel);
     }
 
     public void onClickLoginButton() {
@@ -124,6 +86,10 @@ public class ArticlesViewModel extends ViewModel {
         mNavigator = navigator;
     }
 
+    public void setEditor(ArticleEditor editor) {
+        mEditor = editor;
+    }
+
     private List<ArticleItemViewModel> convertArticleListToArticleVMList(List<Article> articleList) {
         List<ArticleItemViewModel> articleItemVMlList = new ArrayList<>();
         if (articleList == null) {
@@ -133,6 +99,7 @@ public class ArticlesViewModel extends ViewModel {
         for (int i = 0; i < articleList.size(); i++) {
             ArticleItemViewModel articleItemVM = new ArticleItemViewModel();
             articleItemVM.setArticle(articleList.get(i));
+            articleItemVM.setEditor(mEditor);
             articleItemVMlList.add(articleItemVM);
         }
 
