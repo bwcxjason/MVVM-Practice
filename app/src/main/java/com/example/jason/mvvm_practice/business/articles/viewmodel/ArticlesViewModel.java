@@ -8,38 +8,35 @@ import android.os.Handler;
 import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
-import com.example.jason.mvvm_practice.common.async.ListenableFuture;
 import com.example.jason.mvvm_practice.common.command.Command;
 import com.example.jason.mvvm_practice.common.constant.Constant;
 import com.example.jason.mvvm_practice.common.enumeration.NewsTypeEnum;
-import com.example.jason.mvvm_practice.common.retrofit.RetrofitToCommonProxyAdapterFactory;
+import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
 
 public class ArticlesViewModel extends ViewModel {
 
-    private ArticleService articleService = RetrofitToCommonProxyAdapterFactory.getProxyInstance(ArticleService.class);
+    private ArticleService articleService = RetrofitProvider.getInstance().create(ArticleService.class);
 
     public ObservableList<ArticleItemViewModel> articleVMList = new ObservableArrayList<>();
 
     private RefreshHandler mRefreshHandler;
     private Navigator mNavigator;
 
-
     private Handler mHandler = new Handler();
 
-    public Command refresh = new Command() {
-        @Override
-        public void action() {
-            ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-            future.addCallback(articles -> handleRefreshSuccess(articles),
-                    ex -> handleRefreshFailure(ex));
-        }
+    public Command refresh = () -> {
+        Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+        observable.subscribe(this::handleRefreshSuccess, this::handleRefreshFailure);
+    };
+
+    public Command loadMore = () -> {
+        Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+        observable.subscribe(this::handleLoadMoreSuccess, this::handleLoadMoreFailure);
     };
 
     private void handleRefreshSuccess(Articles articles) {
@@ -51,7 +48,7 @@ public class ArticlesViewModel extends ViewModel {
 
     private void handleRefreshFailure(Throwable e) {
         // TODO
-        System.out.println();
+        e.printStackTrace();
     }
 
     private void handleLoadMoreSuccess(Articles articles) {
@@ -61,45 +58,7 @@ public class ArticlesViewModel extends ViewModel {
 
     private void handleLoadMoreFailure(Throwable e) {
         // TODO
-    }
-
-    public Command loadMore = new Command() {
-        @Override
-        public void action() {
-            ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-            future.addCallback(articles -> handleLoadMoreSuccess(articles),
-                    ex -> handleLoadMoreFailure(ex));
-        }
-    };
-
-    class RefreshCallback implements Callback<Articles> {
-
-        @Override
-        public void onResponse(Call<Articles> call, Response<Articles> response) {
-            articleVMList.clear();
-            articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
-
-            mHandler.post(() -> mRefreshHandler.onRefreshFinish());
-        }
-
-        @Override
-        public void onFailure(Call<Articles> call, Throwable t) {
-
-        }
-    }
-
-    class LoadMoreCallback implements Callback<Articles> {
-
-        @Override
-        public void onResponse(Call<Articles> call, Response<Articles> response) {
-            articleVMList.addAll(convertArticleListToArticleVMList(response.body().getArticleList()));
-            mHandler.post(() -> mRefreshHandler.onLoadMoreFinish());
-        }
-
-        @Override
-        public void onFailure(Call<Articles> call, Throwable t) {
-
-        }
+        e.printStackTrace();
     }
 
     public interface RefreshHandler {
