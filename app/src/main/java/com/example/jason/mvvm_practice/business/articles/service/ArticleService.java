@@ -1,12 +1,14 @@
 package com.example.jason.mvvm_practice.business.articles.service;
 
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
-import com.example.jason.mvvm_practice.common.async.ListenableFuture;
-import com.example.jason.mvvm_practice.common.retrofit.TargetRetrofitService;
 
-@TargetRetrofitService(RetrofitArticleService.class)
+import io.reactivex.Observable;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
 public interface ArticleService {
 
-    ListenableFuture<Articles> getArticles(int count, String newsType, int offset);
+    @GET("/discovery/list")
+    Observable<Articles> getArticles(@Query("count") int count, @Query("newsType") String newsType, @Query("offset") int offset);
 
 }
