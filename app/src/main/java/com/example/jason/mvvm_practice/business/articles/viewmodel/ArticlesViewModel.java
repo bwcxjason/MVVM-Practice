@@ -37,6 +37,7 @@ public class ArticlesViewModel extends ViewModel {
     public Command loadMore = () -> {
         Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
         observable.subscribe(this::handleLoadMoreSuccess, this::handleLoadMoreFailure);
+    };
 
     private void handleRefreshSuccess(Articles articles) {
         articleVMList.clear();
