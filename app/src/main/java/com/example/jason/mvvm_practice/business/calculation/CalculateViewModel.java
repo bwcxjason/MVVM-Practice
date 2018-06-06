@@ -6,6 +6,8 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 
+import com.example.jason.mvvm_practice.common.util.CalculationUtil;
+
 public class CalculateViewModel extends BaseObservable {
 
     public ObservableInt price = new ObservableInt();
@@ -20,7 +22,7 @@ public class CalculateViewModel extends BaseObservable {
         order.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                calculateTotalPrice();
+                showTotalPrice();
             }
         });
 
@@ -33,13 +35,13 @@ public class CalculateViewModel extends BaseObservable {
                     discount = 0;
                 }
 
-                calculateTotalPrice();
+                showTotalPrice();
             }
         });
     }
 
-    private void calculateTotalPrice() {
-        totalPrice.set(price.get() * number.get() - discount);
+    private void showTotalPrice() {
+        totalPrice.set(CalculationUtil.calculateTotalPrice(price.get(), number.get(), discount));
     }
 
 }
