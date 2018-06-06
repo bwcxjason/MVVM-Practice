@@ -49,14 +49,11 @@ dependencies {
     implementation "com.google.dagger:dagger-android:2.16"
     implementation "com.google.dagger:dagger-android-support:2.16"
     annotationProcessor "com.google.dagger:dagger-android-processor:2.16"
-    
+
+    // Unit test dependencies
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-all:1.10.19"
-    testImplementation 'org.powermock:powermock-module-junit4:1.6.1'
-    testImplementation 'org.powermock:powermock-module-junit4-rule:1.6.1'
-    testImplementation 'org.powermock:powermock-api-mockito:1.6.1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation 'android.arch.core:core-testing:1.1.1'
 
     // Weex
     implementation 'com.taobao.android:weex_sdk:0.16.0'

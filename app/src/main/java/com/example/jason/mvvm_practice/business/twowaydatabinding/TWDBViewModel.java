@@ -18,9 +18,9 @@ public class TWDBViewModel extends ViewModel {
         result.setValue("{age:" + age.get() + ",name:" + name.get() + ",isMarried:" + isMarried.get() + "}");
     }
 
-    public void update() {
-        age.set(18);
-        name.set("jason");
+    public void reset() {
+        age.set(20);
+        name.set("Jason");
         isMarried.set(true);
     }
 

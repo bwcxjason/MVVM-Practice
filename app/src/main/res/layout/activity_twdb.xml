@@ -64,8 +64,8 @@
             android:layout_height="wrap_content"
             android:background="@color/lightBlue"
             android:layout_marginTop="10dp"
-            android:onClick="@{() -> twdbViewModel.update()}"
-            android:text="update"/>
+            android:onClick="@{() -> twdbViewModel.reset()}"
+            android:text="reset"/>
 
     </LinearLayout>
 
