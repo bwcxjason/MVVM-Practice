@@ -1,24 +1,24 @@
 package com.example.jason.mvvm_practice.business.articles.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
 
-import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
-import com.example.jason.mvvm_practice.common.command.Command;
 import com.example.jason.mvvm_practice.common.constant.Constant;
 import com.example.jason.mvvm_practice.common.di.component.DaggerArticleServiceComponent;
 import com.example.jason.mvvm_practice.common.enumeration.NewsTypeEnum;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class ArticlesViewModel extends ViewModel {
 
@@ -35,24 +35,34 @@ public class ArticlesViewModel extends ViewModel {
     private Navigator mNavigator;
     private ArticleEditor mEditor;
 
-    public Command refresh = () -> {
-        Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-        observable
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::handleRefreshSuccess, this::handleRefreshFailure);
-    };
+    public void onRefresh() {
+        getArticles(articleVMList.size(), this::handleRefreshSuccess, this::handleRefreshFailure);
+    }
 
-    public Command loadMore = () -> {
-        Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-        observable
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::handleLoadMoreSuccess, this::handleLoadMoreFailure);
-    };
+    public void onLoadMore() {
+        getArticles(articleVMList.size(), this::handleLoadMoreSuccess, this::handleLoadMoreFailure);
+    }
 
-    private void handleRefreshSuccess(Articles articles) {
+    @SuppressLint("CheckResult")
+    private void getArticles(int offset, Consumer<List<ArticleItemViewModel>> next, Consumer<Throwable> error) {
+        Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), offset);
+        observable
+                .flatMap(articles -> Observable.fromIterable(articles.getArticleList()))
+                .map(article -> {
+                    ArticleItemViewModel articleItemVM = new ArticleItemViewModel();
+                    articleItemVM.setArticle(article);
+                    articleItemVM.setEditor(mEditor);
+                    return articleItemVM;
+                })
+                .toList()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(next, error);
+    }
+
+    private void handleRefreshSuccess(List<ArticleItemViewModel> itemViewModels) {
         articleVMList.clear();
-        articleVMList.addAll(convertArticleListToArticleVMList(articles.getArticleList()));
-
+        articleVMList.addAll(itemViewModels);
         mRefreshHandler.onRefreshFinish();
     }
 
@@ -60,8 +70,8 @@ public class ArticlesViewModel extends ViewModel {
         e.printStackTrace();
     }
 
-    private void handleLoadMoreSuccess(Articles articles) {
-        articleVMList.addAll(convertArticleListToArticleVMList(articles.getArticleList()));
+    private void handleLoadMoreSuccess(List<ArticleItemViewModel> itemViewModels) {
+        articleVMList.addAll(itemViewModels);
         mRefreshHandler.onLoadMoreFinish();
     }
 
@@ -98,22 +108,6 @@ public class ArticlesViewModel extends ViewModel {
 
     public void setEditor(ArticleEditor editor) {
         mEditor = editor;
-    }
-
-    private List<ArticleItemViewModel> convertArticleListToArticleVMList(List<Article> articleList) {
-        List<ArticleItemViewModel> articleItemVMlList = new ArrayList<>();
-        if (articleList == null) {
-            return articleItemVMlList;
-        }
-
-        for (int i = 0; i < articleList.size(); i++) {
-            ArticleItemViewModel articleItemVM = new ArticleItemViewModel();
-            articleItemVM.setArticle(articleList.get(i));
-            articleItemVM.setEditor(mEditor);
-            articleItemVMlList.add(articleItemVM);
-        }
-
-        return articleItemVMlList;
     }
 
 }

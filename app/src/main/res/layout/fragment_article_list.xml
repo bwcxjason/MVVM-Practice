@@ -15,8 +15,8 @@
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:onLoadMoreCommand="@{articlesViewModel.loadMore}"
-        app:onRefreshCommand="@{articlesViewModel.refresh}">
+        app:onLoadMore="@{articlesViewModel::onLoadMore}"
+        app:onRefresh="@{articlesViewModel::onRefresh}">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -7,14 +7,14 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 public class SmartRefreshLayoutAdapter {
 
-    @BindingAdapter({"onRefreshCommand"})
+    @BindingAdapter({"onRefresh"})
     public static void setOnRefreshCommand(SmartRefreshLayout refreshLayout, Command command) {
         if (command != null) {
             refreshLayout.setOnRefreshListener(refreshLayout1 -> command.execute());
         }
     }
 
-    @BindingAdapter({"onLoadMoreCommand"})
+    @BindingAdapter({"onLoadMore"})
     public static void setOnLoadMoreCommand(SmartRefreshLayout refreshLayout, Command command) {
         if (command != null) {
             refreshLayout.setOnLoadMoreListener(refreshLayout1 -> command.execute());
