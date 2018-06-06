@@ -8,19 +8,18 @@ import android.os.Handler;
 import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
+import com.example.jason.mvvm_practice.common.async.ListenableFuture;
 import com.example.jason.mvvm_practice.common.command.Command;
 import com.example.jason.mvvm_practice.common.constant.Constant;
 import com.example.jason.mvvm_practice.common.enumeration.NewsTypeEnum;
-import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
+import com.example.jason.mvvm_practice.common.retrofit.RetrofitToCommonProxyAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-
 public class ArticlesViewModel extends ViewModel {
 
-    private ArticleService articleService = RetrofitProvider.getInstance().create(ArticleService.class);
+    private ArticleService articleService = RetrofitToCommonProxyAdapterFactory.getProxyInstance(ArticleService.class);
 
     public ObservableList<ArticleItemViewModel> articleVMList = new ObservableArrayList<>();
 
@@ -30,13 +29,15 @@ public class ArticlesViewModel extends ViewModel {
     private Handler mHandler = new Handler();
 
     public Command refresh = () -> {
-        Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-        observable.subscribe(this::handleRefreshSuccess, this::handleRefreshFailure);
+        ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+        future.addCallback(articles -> handleRefreshSuccess(articles),
+                ex -> handleRefreshFailure(ex));
     };
 
     public Command loadMore = () -> {
-        Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-        observable.subscribe(this::handleLoadMoreSuccess, this::handleLoadMoreFailure);
+        ListenableFuture<Articles> future = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
+        future.addCallback(articles -> handleLoadMoreSuccess(articles),
+                ex -> handleLoadMoreFailure(ex));
     };
 
     private void handleRefreshSuccess(Articles articles) {
@@ -56,7 +57,6 @@ public class ArticlesViewModel extends ViewModel {
     }
 
     private void handleLoadMoreFailure(Throwable e) {
-
         e.printStackTrace();
     }
 
