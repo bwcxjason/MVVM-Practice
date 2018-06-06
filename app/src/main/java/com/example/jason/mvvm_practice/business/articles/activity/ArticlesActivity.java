@@ -4,7 +4,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,7 +19,7 @@ import com.example.jason.mvvm_practice.business.articles.viewmodel.ArticlesViewM
 import com.example.jason.mvvm_practice.common.adapter.ListViewAdapter;
 import com.example.jason.mvvm_practice.databinding.ActivityArticlesBinding;
 
-public class ArticlesActivity extends AppCompatActivity implements ArticlesViewModel.RefreshHandler, ArticlesViewModel.Navigator {
+public class ArticlesActivity extends AppCompatActivity implements ArticlesViewModel.RefreshHandler, ArticlesViewModel.Navigator, ArticlesViewModel.ArticleEditor {
 
     private ActivityArticlesBinding mArticlesBinding;
     private ArticlesViewModel mArticlesViewModel;
@@ -30,9 +33,12 @@ public class ArticlesActivity extends AppCompatActivity implements ArticlesViewM
         mArticlesViewModel = ViewModelProviders.of(this).get(ArticlesViewModel.class);
         mArticlesViewModel.setRefreshHandler(this);
         mArticlesViewModel.setNavigator(this);
+        mArticlesViewModel.setEditor(this);
         mArticlesBinding.setArticlesViewModel(mArticlesViewModel);
 
         setupListAdapter();
+
+        mArticlesBinding.refreshLayout.autoRefresh();
     }
 
     private void setupListAdapter() {
@@ -58,6 +64,17 @@ public class ArticlesActivity extends AppCompatActivity implements ArticlesViewM
     public void goToLogin() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void editArticle(ArticleItemViewModel itemViewModel) {
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        new AlertDialog.Builder(this).setTitle("Title")
+                .setView(input)
+                .setPositiveButton("OK", (dialog, which) -> itemViewModel.title.set(input.getText().toString()))
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.cancel())
+                .show();
     }
 
 
