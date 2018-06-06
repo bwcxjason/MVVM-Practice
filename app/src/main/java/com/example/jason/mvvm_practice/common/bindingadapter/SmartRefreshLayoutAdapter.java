@@ -10,14 +10,14 @@ public class SmartRefreshLayoutAdapter {
     @BindingAdapter({"onRefreshCommand"})
     public static void setOnRefreshCommand(SmartRefreshLayout refreshLayout, Command command) {
         if (command != null) {
-            refreshLayout.setOnRefreshListener(refreshLayout1 -> command.action());
+            refreshLayout.setOnRefreshListener(refreshLayout1 -> command.execute());
         }
     }
 
     @BindingAdapter({"onLoadMoreCommand"})
     public static void setOnLoadMoreCommand(SmartRefreshLayout refreshLayout, Command command) {
         if (command != null) {
-            refreshLayout.setOnLoadMoreListener(refreshLayout1 -> command.action());
+            refreshLayout.setOnLoadMoreListener(refreshLayout1 -> command.execute());
         }
     }
 

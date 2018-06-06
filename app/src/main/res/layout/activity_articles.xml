@@ -1,56 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".business.articles.activity.ArticlesActivity">
 
     <data>
 
-        <variable
-            name="articlesViewModel"
-            type="com.example.jason.mvvm_practice.business.articles.viewmodel.ArticlesViewModel" />
     </data>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-        <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="新增"-->
-            <!--android:onClick="@{() -> articlesViewModel.addArticle()}"-->
-            <!--android:layout_weight="1"/>-->
-
-        <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="修改"-->
-            <!--android:layout_weight="1"/>-->
-
-    <!--</LinearLayout>-->
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:onLoadMoreCommand="@{articlesViewModel.loadMore}"
-        app:onRefreshCommand="@{articlesViewModel.refresh}">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <fragment
+            android:id="@+id/fragment"
+            android:name="com.example.jason.mvvm_practice.business.articles.fragment.ArticleFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:textAlignment="center">
+            android:layout_height="match_parent" />
 
-            <ListView
-                android:id="@+id/articleListView"
-                bindItems="@{articlesViewModel.articleVMList}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </FrameLayout>
 
 </layout>

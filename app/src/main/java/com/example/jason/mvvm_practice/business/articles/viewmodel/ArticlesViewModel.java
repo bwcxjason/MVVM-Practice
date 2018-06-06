@@ -3,47 +3,57 @@ package com.example.jason.mvvm_practice.business.articles.viewmodel;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
-import android.os.Handler;
 
 import com.example.jason.mvvm_practice.business.articles.model.Article;
 import com.example.jason.mvvm_practice.business.articles.model.Articles;
 import com.example.jason.mvvm_practice.business.articles.service.ArticleService;
 import com.example.jason.mvvm_practice.common.command.Command;
 import com.example.jason.mvvm_practice.common.constant.Constant;
+import com.example.jason.mvvm_practice.common.di.component.DaggerArticleServiceComponent;
 import com.example.jason.mvvm_practice.common.enumeration.NewsTypeEnum;
-import com.example.jason.mvvm_practice.common.retrofit.RetrofitProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class ArticlesViewModel extends ViewModel {
 
-    private ArticleService articleService = RetrofitProvider.getInstance().create(ArticleService.class);
+    @Inject
+    ArticleService articleService;
+
+    public ArticlesViewModel() {
+        DaggerArticleServiceComponent.create().inject(this);
+    }
 
     public ObservableList<ArticleItemViewModel> articleVMList = new ObservableArrayList<>();
 
     private RefreshHandler mRefreshHandler;
     private Navigator mNavigator;
     private ArticleEditor mEditor;
-    private Handler mHandler = new Handler();
 
     public Command refresh = () -> {
         Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-        observable.subscribe(this::handleRefreshSuccess, this::handleRefreshFailure);
+        observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleRefreshSuccess, this::handleRefreshFailure);
     };
 
     public Command loadMore = () -> {
         Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), 0);
-        observable.subscribe(this::handleLoadMoreSuccess, this::handleLoadMoreFailure);
+        observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleLoadMoreSuccess, this::handleLoadMoreFailure);
     };
 
     private void handleRefreshSuccess(Articles articles) {
         articleVMList.clear();
         articleVMList.addAll(convertArticleListToArticleVMList(articles.getArticleList()));
 
-        mHandler.post(() -> mRefreshHandler.onRefreshFinish());
+        mRefreshHandler.onRefreshFinish();
     }
 
     private void handleRefreshFailure(Throwable e) {
@@ -52,7 +62,7 @@ public class ArticlesViewModel extends ViewModel {
 
     private void handleLoadMoreSuccess(Articles articles) {
         articleVMList.addAll(convertArticleListToArticleVMList(articles.getArticleList()));
-        mHandler.post(() -> mRefreshHandler.onLoadMoreFinish());
+        mRefreshHandler.onLoadMoreFinish();
     }
 
     private void handleLoadMoreFailure(Throwable e) {

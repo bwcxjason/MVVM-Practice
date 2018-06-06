@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="articleItemViewModel"
-            type="com.example.jason.mvvm_practice.business.articles.viewmodel.ArticleItemViewModel"/>
+            type="com.example.jason.mvvm_practice.business.articles.viewmodel.ArticleItemViewModel" />
     </data>
 
     <LinearLayout
@@ -15,15 +17,20 @@
 
         <ImageView
             android:id="@+id/articleImage"
+            bindImage="@{articleItemViewModel.imageUrl}"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            bindImage="@{articleItemViewModel.imageUrl}"/>
+            android:layout_marginLeft="10dp" />
 
         <TextView
             android:id="@+id/article"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{articleItemViewModel.title}"/>
+            android:layout_margin="10dp"
+            android:gravity="top|left"
+            android:text="@{articleItemViewModel.title}"
+            android:textSize="15sp"
+            tool:text="测试标题" />
 
 
     </LinearLayout>

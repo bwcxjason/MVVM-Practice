@@ -18,14 +18,8 @@ public class CalculateViewModel extends BaseObservable {
     private int discount = 0;
 
     public CalculateViewModel() {
-        price.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                calculateTotalPrice();
-            }
-        });
-
-        number.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
+        ObservableField order = new ObservableField<>(price, number);
+        order.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 calculateTotalPrice();

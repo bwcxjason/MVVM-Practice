@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".business.articles.activity.ArticlesActivity">
+
+    <data>
+
+        <variable
+            name="articlesViewModel"
+            type="com.example.jason.mvvm_practice.business.articles.viewmodel.ArticlesViewModel" />
+    </data>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:onLoadMoreCommand="@{articlesViewModel.loadMore}"
+        app:onRefreshCommand="@{articlesViewModel.refresh}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:textAlignment="center">
+
+            <ListView
+                android:id="@+id/articleListView"
+                bindItems="@{articlesViewModel.articleVMList}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</layout>

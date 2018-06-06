@@ -8,6 +8,6 @@ public class Constant {
     /**
      * 分页每页数量
      */
-    public static final int PAGE_ITEMS_COUNT = 2;
+    public static final int PAGE_ITEMS_COUNT = 20;
 
 }

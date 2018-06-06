@@ -54,10 +54,13 @@ public class ListViewAdapter<T> extends ArrayAdapter<T> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewDataBinding binding = DataBindingUtil.inflate(mLayoutInflater, mResource, parent, false);
+        if (convertView == null) {
+            convertView = DataBindingUtil.inflate(mLayoutInflater, mResource, parent, false).getRoot();
+        }
+        ViewDataBinding binding = DataBindingUtil.getBinding(convertView);
         binding.setVariable(mVariableId, mItems.get(position));
         binding.executePendingBindings();
-        return binding.getRoot();
+        return convertView;
     }
 
 }
