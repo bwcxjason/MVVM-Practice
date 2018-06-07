@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
@@ -18,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyInt;
@@ -46,42 +45,34 @@ public class ArticlesViewModelTest {
     @Mock
     private ArticlesViewModel.ArticleEditor mArticleEditor;
 
+    @InjectMocks
     private ArticlesViewModel mArticlesViewModel;
 
     @Before
     public void init() {
+        MockitoAnnotations.initMocks(this);
         mockData();
-        mArticlesViewModel = new ArticlesViewModel();
     }
 
     private void mockData() {
-        MockitoAnnotations.initMocks(this);
+        List<Article> articleList = new ArrayList<>();
 
-        Observable<Articles> articlesObservable = Observable.create(new ObservableOnSubscribe<Articles>() {
-            @Override
-            public void subscribe(ObservableEmitter<Articles> emitter) throws Exception {
-                List<Article> articleList = new ArrayList<>();
+        Article article1 = new Article();
+        article1.setTitle("Article1");
+        article1.setImageUrl("Article1.png");
 
-                Article article1 = new Article();
-                article1.setTitle("Article1");
-                article1.setImageUrl("Article1.png");
+        Article article2 = new Article();
+        article2.setTitle("Article2");
+        article2.setImageUrl("Article2.png");
 
-                Article article2 = new Article();
-                article2.setTitle("Article2");
-                article2.setImageUrl("Article2.png");
+        articleList.add(article1);
+        articleList.add(article2);
 
-                articleList.add(article1);
-                articleList.add(article2);
+        Articles articles = new Articles();
+        articles.setArticleList(articleList);
+        Observable<Articles> observable = Observable.just(articles);
 
-                Articles articles = new Articles();
-                articles.setArticleList(articleList);
-
-                emitter.onNext(articles);
-            }
-        });
-
-        when(mArticleService.getArticles(anyInt(), anyString(), anyInt())).thenReturn(articlesObservable);
-
+        when(mArticleService.getArticles(anyInt(), anyString(), anyInt())).thenReturn(observable);
     }
 
     @Test
@@ -89,9 +80,11 @@ public class ArticlesViewModelTest {
         mArticlesViewModel.onRefresh();
         List<ArticleItemViewModel> articleItemViewModelList = mArticlesViewModel.articleVMList;
         ArticleItemViewModel article1 = articleItemViewModelList.get(0);
+        ArticleItemViewModel article2 = articleItemViewModelList.get(1);
+
         assertEquals("Article1", article1.title.get());
         assertEquals("Article1.png", article1.imageUrl.get());
-
+        assertEquals("Article2", article2.title.get());
+        assertEquals("Article2.png", article2.imageUrl.get());
     }
-
 }

@@ -76,7 +76,6 @@ public class ArticlesViewModel extends ViewModel {
     }
 
     private void handleLoadMoreFailure(Throwable e) {
-
         e.printStackTrace();
     }
 
