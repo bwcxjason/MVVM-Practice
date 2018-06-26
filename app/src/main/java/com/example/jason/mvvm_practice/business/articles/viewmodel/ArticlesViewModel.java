@@ -44,7 +44,7 @@ public class ArticlesViewModel extends ViewModel {
     }
 
     @SuppressLint("CheckResult")
-    private void getArticles(int offset, Consumer<List<ArticleItemViewModel>> next, Consumer<Throwable> error) {
+    private void getArticles(int offset, Consumer<List<ArticleItemViewModel>> success, Consumer<Throwable> error) {
         Observable<Articles> observable = articleService.getArticles(Constant.PAGE_ITEMS_COUNT, NewsTypeEnum.APP_INFORMATION.toValue(), offset);
         observable
                 .flatMap(articles -> Observable.fromIterable(articles.getArticleList()))
@@ -57,7 +57,7 @@ public class ArticlesViewModel extends ViewModel {
                 .toList()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(next, error);
+                .subscribe(success, error);
     }
 
     private void handleRefreshSuccess(List<ArticleItemViewModel> itemViewModels) {

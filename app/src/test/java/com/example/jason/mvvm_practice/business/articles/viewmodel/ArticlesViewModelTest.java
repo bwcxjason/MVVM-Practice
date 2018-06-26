@@ -7,13 +7,11 @@ import com.example.jason.mvvm_practice.testutil.RxImmediateSchedulerRule;
 
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +23,11 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ArticlesViewModelTest {
 
     @ClassRule
     public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
-
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
     private ArticleService mArticleService;
@@ -50,7 +46,6 @@ public class ArticlesViewModelTest {
 
     @Before
     public void init() {
-        MockitoAnnotations.initMocks(this);
         mockData();
     }
 

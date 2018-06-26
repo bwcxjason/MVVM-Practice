@@ -16,9 +16,10 @@ public class CalculateViewModel extends BaseObservable {
     public ObservableInt couponValue = new ObservableInt(20);
     public ObservableInt totalPrice = new ObservableInt();
     private int discount = 0;
+    ObservableField order;
 
     public CalculateViewModel() {
-        ObservableField order = new ObservableField<>(price, number);
+        order = new ObservableField<>(price, number);
         order.addOnPropertyChangedCallback(new OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {

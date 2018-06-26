@@ -7,7 +7,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class  ArticleServiceModule {
+public class ArticleServiceModule {
 
     @Provides
     ArticleService provideArticleService() {
